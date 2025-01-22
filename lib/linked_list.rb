@@ -1,4 +1,7 @@
-require_relative 'node.rb'
+# frozen_string_literal: true
+
+require_relative 'node'
+# class for linked list
 class LinkedList
   attr_accessor :head, :tail
 
@@ -8,32 +11,45 @@ class LinkedList
   end
 
   def append(value)
-    if head == nil
+    if head.nil? # list has no items
       @head = Node.new(value)
       @tail = @head
-    elsif head == tail
-      @tail = Node.new(value)
+    elsif head == tail # list has one item
+      @tail = Node.new(value, head)
       @head.next_node = @tail
     else
-      @tail = tail.next_node = Node.new(value)
+      @tail = tail.next_node = Node.new(value, tail)
+    end
+  end
+
+  def prepend(value)
+    if head.nil? # list has no items
+      @head = Node.new(value)
+      @tail = @head
+    elsif head == tail # list has one item
+      @head = Node.new(value, tail)
+      @head.next_node = @tail
+    else
+      @head = Node.new(value, nil, head)
     end
   end
 
   def to_s
-    current_node = head
-    value = ''
-    while current_node.next_node 
-      value.concat("(#{current_node.value})-> ")
-      current_node = current_node.next_node
-    end
-    puts value.concat("(#{current_node.value})-> nil")
+    list_items(head)
   end
 
-  # def traverse(current_node)
-  #   return current_node.value if current_node.next_node == nil
-  #   puts current_node.value
-  #   traverse(current_node.next_node)
-  # end
+  def list_items(current_node = head)
+    return print "(#{current_node.value})-> nil " if current_node.next_node.nil?
+
+    print "(#{current_node.value})-> "
+    list_items(current_node.next_node)
+  end
+
+  def count(current_node = head)
+    return 1 if current_node.next_node.nil?
+
+    count(current_node.next_node) + 1
+  end
 end
 
 list = LinkedList.new
@@ -43,6 +59,5 @@ list.append('cat')
 list.append('parrot')
 list.append('hamster')
 list.append('snake')
-list.append('turtle')
-list.to_s
-# puts list.tail.next_node
+list.prepend('turtle')
+puts list.count
