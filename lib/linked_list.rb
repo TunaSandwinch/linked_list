@@ -15,7 +15,7 @@ class LinkedList
   end
 
   def tail_val
-    tail.val
+    tail.value
   end
 
   def append(value)
