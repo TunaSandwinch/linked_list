@@ -50,14 +50,35 @@ class LinkedList
 
     count(current_node.next_node) + 1
   end
+
+  def at(index, current_node = head)
+    return nil if (index + 1) > count || index.negative?
+    return current_node.value if index.zero?
+
+    at(index - 1, current_node.next_node)
+  end
+
+  def pop
+    @tail = tail.prev_node
+    tail.next_node = nil
+  end
+
+  def contains?(value, current_node = head)
+    return true if value == current_node.value
+    return false if current_node.next_node.nil?
+
+    contains?(value, current_node.next_node)
+  end
+
+  def find(value, current_node = head)
+    return 0 if current_node.value == value
+    return nil if current_node.next_node.nil?
+
+    result = find(value, current_node.next_node)
+    if result.nil?
+      nil
+    else
+      result + 1
+    end
+  end
 end
-
-list = LinkedList.new
-
-list.append('dog')
-list.append('cat')
-list.append('parrot')
-list.append('hamster')
-list.append('snake')
-list.prepend('turtle')
-puts list.count
