@@ -10,6 +10,14 @@ class LinkedList
     @tail = nil
   end
 
+  def head_val
+    head.value
+  end
+
+  def tail_val
+    tail.val
+  end
+
   def append(value)
     if head.nil? # list has no items
       @head = Node.new(value)
